@@ -11,8 +11,8 @@
     "react-scripts": "5.0.1"
   },
   "scripts": {
-    "start": "webpack serve --env env=dev --config webpack.config.js --host 0.0.0.0 ",
-    "start:prod": "webpack serve --env env=prod --config webpack.config.js --host 0.0.0.0 ",
+    "start": "webpack serve --env env=dev --config webpack.config.js",
+    "start:prod": "webpack serve --env env=prod --config webpack.config.js",
     "start-secure": "webpack-dev-server --https --config webpack.config.js --host dev.local --env env=dev mode=secure",
     "build": "webpack --env env=dev --config webpack.config.js",
     "build:prod": "webpack --env env=prod --config webpack.config.js",
