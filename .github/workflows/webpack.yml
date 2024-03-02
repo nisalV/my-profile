@@ -25,4 +25,4 @@ jobs:
     - name: Build
       run: |
         yarn install
-        yarn webpack serve --env env=dev --config webpack.config.js
+        yarn webpack --env env=dev --config webpack.config.js
