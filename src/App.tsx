@@ -1,4 +1,5 @@
 import Button from './CoreComponents/ButtonComponent/Button'
+import Icon from './CoreComponents/IconComponent/Icon'
 import Text from './CoreComponents/TextComponent/Text'
 
 const styles = {
@@ -33,6 +34,8 @@ function App() {
         textStyles={{ marginTop: 20 }}
         onClick={() => alert('clicked')}
       />
+      <Icon name="add" width={20} height={20} color="red" />
+      <Icon name="signOut" width={20} height={20} stroke="red" />
     </div>
   )
 }
