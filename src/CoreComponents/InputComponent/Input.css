@@ -1,0 +1,9 @@
+.input {
+  outline: 2px solid transparent;
+  transition: outline 0.5s ease;
+}
+
+.input:hover {
+  outline: 2px solid #ee12127f;
+}
+

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { HTMLAttributes } from 'react'
 import Text from '../TextComponent/Text'
 import './Button.css'
 
@@ -14,6 +14,7 @@ const styles = {
     paddingBlock: 0,
     paddingInline: 0,
     position: 'relative' as const,
+    display: 'block',
   },
   contentContainerConstantStyles: {
     border: 0,
@@ -38,8 +39,7 @@ const styles = {
     paddingRight: '5px',
   },
 }
-
-type ButtonProps = {
+interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   width: number | string
   height: number | string
   id?: string
@@ -53,7 +53,6 @@ type ButtonProps = {
   centerElementStyles?: React.CSSProperties
   rightElementStyles?: React.CSSProperties
   isDisabled?: boolean
-  onClick: () => void
 }
 
 function Button({
@@ -69,7 +68,7 @@ function Button({
   centerElementStyles,
   rightElementStyles,
   isDisabled,
-  onClick,
+  ...props
 }: ButtonProps) {
   return (
     <button
@@ -82,7 +81,7 @@ function Button({
         ...styles.buttonConstantStyles,
       }}
       disabled={isDisabled}
-      onClick={() => onClick()}
+      {...props}
     >
       <div
         className="button-overlay"
