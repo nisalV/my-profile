@@ -6,6 +6,7 @@ const styles = {
     padding: 0,
     width: 'fit-content',
     height: 'fit-content',
+    display: 'block',
   },
   oneLineStyles: {
     whiteSpace: 'nowrap',
@@ -18,7 +19,7 @@ const styles = {
   },
 }
 
-type TextProps = {
+interface TextProps extends React.HTMLAttributes<HTMLParagraphElement> {
   text: string
   id?: string
   fontSize?: number | string
@@ -26,27 +27,37 @@ type TextProps = {
   color?: string
   oneLine?: boolean
   textStyles?: React.CSSProperties
-  onClick?: () => void
+  clickable?: boolean
 }
 
-const Text = (props: TextProps) => {
+const Text = ({
+  text,
+  id,
+  fontSize,
+  fontWeight,
+  color,
+  oneLine,
+  textStyles,
+  clickable,
+  ...props
+}: TextProps) => {
   return (
     <p
-      id={props.id}
-      className={props.onClick && 'text'}
+      id={id}
+      className={clickable ? id || 'text' : undefined}
       style={{
-        color: props.color || 'white',
-        fontWeight: props.fontWeight || 'normal',
-        fontSize: props.fontSize || '15px',
-        cursor: props.onClick ? 'pointer' : 'default',
+        color: color || 'white',
+        fontWeight: fontWeight || 'normal',
+        fontSize: fontSize || '15px',
+        cursor: clickable ? 'pointer' : 'default',
         ...styles.wrapper,
-        ...props.textStyles,
-        ...(props.oneLine && styles.oneLineStyles),
-        ...(!props.oneLine && styles.lineBreak),
+        ...textStyles,
+        ...(oneLine && styles.oneLineStyles),
+        ...(!oneLine && styles.lineBreak),
       }}
-      onClick={() => props.onClick && props.onClick()}
+      {...props}
     >
-      {props.text}
+      {text}
     </p>
   )
 }
