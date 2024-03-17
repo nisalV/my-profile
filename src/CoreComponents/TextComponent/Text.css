@@ -1,8 +1,0 @@
-.text {
-    opacity: 1;
-    transition: 0.5s;
-  }
-  
-.text:hover {
-    opacity: 0.75;
-}

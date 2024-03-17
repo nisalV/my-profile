@@ -1,12 +1,24 @@
-import './Text.css'
+import * as stylex from '@stylexjs/stylex'
 
-const styles = {
+const styles = stylex.create({
   wrapper: {
     margin: 0,
     padding: 0,
     width: 'fit-content',
     height: 'fit-content',
     display: 'block',
+    color: 'white',
+    fontWeight: 'normal',
+    fontSize: '15px',
+    cursor: 'default',
+  },
+  clickableTextStyles: {
+    cursor: 'pointer',
+    opacity: {
+      default: 1,
+      ':hover': 0.75,
+    },
+    transition: 'all 0.5s ease',
   },
   oneLineStyles: {
     whiteSpace: 'nowrap',
@@ -17,25 +29,19 @@ const styles = {
   lineBreak: {
     whiteSpace: 'pre-line',
   },
-}
+})
 
 interface TextProps extends React.HTMLAttributes<HTMLParagraphElement> {
   text: string
   id?: string
-  fontSize?: number | string
-  fontWeight?: number | string
-  color?: string
   oneLine?: boolean
-  textStyles?: React.CSSProperties
+  textStyles?: stylex.StyleXStyles
   clickable?: boolean
 }
 
 const Text = ({
   text,
   id,
-  fontSize,
-  fontWeight,
-  color,
   oneLine,
   textStyles,
   clickable,
@@ -45,17 +51,14 @@ const Text = ({
     <p
       id={id}
       className={clickable ? id || 'text' : undefined}
-      style={{
-        color: color || 'white',
-        fontWeight: fontWeight || 'normal',
-        fontSize: fontSize || '15px',
-        cursor: clickable ? 'pointer' : 'default',
-        ...styles.wrapper,
-        ...textStyles,
-        ...(oneLine && styles.oneLineStyles),
-        ...(!oneLine && styles.lineBreak),
-      }}
       {...props}
+      {...stylex.props(
+        styles.wrapper,
+        clickable && styles.clickableTextStyles,
+        textStyles,
+        oneLine && styles.oneLineStyles,
+        !oneLine && styles.lineBreak
+      )}
     >
       {text}
     </p>

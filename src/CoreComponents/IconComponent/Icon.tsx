@@ -1,5 +1,22 @@
 import { iconList } from '../../Assets/iconList'
-import './Icon.css'
+import * as stylex from '@stylexjs/stylex'
+
+const styles = stylex.create({
+  iconStyles: {
+    display: 'block',
+    opacity: {
+      default: 1,
+      ':hover': 0.75,
+    },
+    transition: 'all 0.5s ease',
+  },
+  cursorDefault: {
+    cursor: 'default',
+  },
+  cursorPointer: {
+    cursor: 'pointer',
+  },
+})
 
 type IconProps = {
   name: string
@@ -21,7 +38,10 @@ const Icon = ({ name, width, height, color, stroke, onPress }: IconProps) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       onClick={onPress}
-      style={{ cursor: onPress ? 'pointer' : 'default', display: 'block' }}
+      {...stylex.props(
+        styles.iconStyles,
+        onPress ? styles.cursorPointer : styles.cursorDefault
+      )}
     >
       {iconDetails.paths.map((path, index) => (
         <path
