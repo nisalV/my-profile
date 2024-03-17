@@ -1,6 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
+const StylexPlugin = require('@stylexjs/webpack-plugin')
 
 module.exports = (env) => {
   const mode = env.env == 'prod' ? 'production' : 'development'
@@ -25,10 +26,6 @@ module.exports = (env) => {
           test: /\.(ts|tsx)$/,
           include: [path.resolve(__dirname, 'src')],
           use: ['ts-loader'],
-        },
-        {
-          test: /\.css$/i,
-          use: ['style-loader', 'css-loader'],
         },
         {
           test: /\.(?:ico)$/i,
@@ -57,6 +54,10 @@ module.exports = (env) => {
       }),
       new Dotenv({
         path: `./env/${env.env}.env`,
+      }),
+      new StylexPlugin({
+        filename: 'styles.[contenthash].css',
+        dev: mode === 'development',
       }),
     ],
     devServer: {

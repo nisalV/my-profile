@@ -1,13 +1,16 @@
-import React, { HTMLAttributes } from 'react'
+import { HTMLAttributes } from 'react'
 import Text from '../TextComponent/Text'
-import './Button.css'
+import * as stylex from '@stylexjs/stylex'
 
-const styles = {
+const styles = stylex.create({
   buttonWrapper: {
     margin: 0,
-    border: 0,
+    borderWidth: 0,
     borderRadius: 8,
     backgroundColor: 'red',
+    background: 'linear-gradient(#0000, rgb(0 0 0/10%)) top/100% 800%',
+    backgroundPosition: { ':hover': 'bottom' },
+    transition: 'all 0.5s ease',
   },
   buttonConstantStyles: {
     padding: 0,
@@ -17,7 +20,7 @@ const styles = {
     display: 'block',
   },
   contentContainerConstantStyles: {
-    border: 0,
+    borderWidth: 0,
     padding: '5px',
   },
   innerItemCommonStyles: {
@@ -38,26 +41,41 @@ const styles = {
   paddingRight: {
     paddingRight: '5px',
   },
-}
+  cursorDefault: {
+    cursor: 'default',
+  },
+  cursorPointer: {
+    cursor: 'pointer',
+  },
+  buttonOverlayStyles: {
+    opacity: 0,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    filter: 'alpha(opacity = 0)',
+    position: 'absolute',
+    display: 'block',
+    background: 'transparent',
+  },
+})
+
 interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
-  width: number | string
-  height: number | string
   id?: string
   text?: string
   leftElement?: JSX.Element
   centerElement?: JSX.Element
   rightElement?: JSX.Element
-  buttonStyles?: React.CSSProperties
-  textStyles?: React.CSSProperties
-  leftElementStyles?: React.CSSProperties
-  centerElementStyles?: React.CSSProperties
-  rightElementStyles?: React.CSSProperties
+  buttonStyles?: stylex.StyleXStyles
+  textStyles?: stylex.StyleXStyles
+  leftElementStyles?: stylex.StyleXStyles
+  centerElementStyles?: stylex.StyleXStyles
+  rightElementStyles?: stylex.StyleXStyles
   isDisabled?: boolean
 }
 
 function Button({
-  width,
-  height,
+  id,
   text,
   leftElement: LeftElement,
   centerElement: CenterElement,
@@ -72,62 +90,45 @@ function Button({
 }: ButtonProps) {
   return (
     <button
-      className="button"
-      style={{
-        ...styles.buttonWrapper,
-        cursor: isDisabled ? 'default' : 'pointer',
-        ...buttonStyles,
-        ...styles.hideOverflow,
-        ...styles.buttonConstantStyles,
-      }}
+      id={id}
       disabled={isDisabled}
       {...props}
+      {...stylex.props(
+        styles.buttonWrapper,
+        isDisabled ? styles.cursorDefault : styles.cursorPointer,
+        buttonStyles,
+        styles.hideOverflow,
+        styles.buttonConstantStyles
+      )}
     >
+      <div {...stylex.props(styles.buttonOverlayStyles)}></div>
       <div
-        className="button-overlay"
-        style={{
-          borderRadius:
-            buttonStyles?.borderRadius || styles.buttonWrapper.borderRadius,
-        }}
-      ></div>
-      <div
-        style={{
-          ...styles.innerItemCommonStyles,
-          ...((LeftElement || RightElement) && styles.spaceBetween),
-          ...styles.hideOverflow,
-          ...styles.contentContainerConstantStyles,
-          width: width,
-          height: height,
-        }}
+        {...stylex.props(
+          styles.innerItemCommonStyles,
+          (LeftElement || RightElement) && styles.spaceBetween,
+          styles.hideOverflow,
+          styles.contentContainerConstantStyles
+        )}
       >
         {LeftElement && (
           <div
-            style={{
-              ...leftElementStyles,
-              ...styles.innerItemCommonStyles,
-            }}
+            {...stylex.props(leftElementStyles, styles.innerItemCommonStyles)}
           >
             {LeftElement}
           </div>
         )}
         {(text || CenterElement) && (
           <div
-            style={{
-              ...(LeftElement && styles.paddingLeft),
-              ...(RightElement && styles.paddingRight),
-              ...centerElementStyles,
-              ...styles.innerItemCommonStyles,
-              ...styles.hideOverflow,
-            }}
+            {...stylex.props(
+              LeftElement && styles.paddingLeft,
+              RightElement && styles.paddingRight,
+              centerElementStyles,
+              styles.innerItemCommonStyles,
+              styles.hideOverflow
+            )}
           >
             {text ? (
-              <Text
-                oneLine
-                text={text}
-                fontSize={15}
-                fontWeight={'normal'}
-                textStyles={textStyles}
-              />
+              <Text oneLine text={text} textStyles={textStyles} />
             ) : (
               CenterElement
             )}
@@ -135,10 +136,7 @@ function Button({
         )}
         {RightElement && (
           <div
-            style={{
-              ...rightElementStyles,
-              ...styles.innerItemCommonStyles,
-            }}
+            {...stylex.props(rightElementStyles, styles.innerItemCommonStyles)}
           >
             {RightElement}
           </div>

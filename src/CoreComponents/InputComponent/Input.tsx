@@ -1,22 +1,34 @@
 import React, { HTMLAttributes } from 'react'
 import Icon from '../IconComponent/Icon'
-import './Input.css'
+import * as stylex from '@stylexjs/stylex'
 
-const styles = {
+const styles = stylex.create({
   wrapper: {
     display: 'flex',
     flexDirection: 'row' as const,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     backgroundColor: 'white',
     overflow: 'hidden',
-    maxHeight: 'fit-content',
-    maxWidth: 'fit-content',
     padding: '10px 0px',
     borderRadius: 8,
-    border: '1px solid #ccc',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#ccc',
+    outline: {
+      default: '2px solid transparent',
+      ':hover': '2px solid #007bff',
+    },
+    transition: 'outline 0.2s ease',
   },
-  iconWrapper: {
+  leftIconWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    width: 'auto',
+  },
+  rightIconWrapper: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -24,13 +36,20 @@ const styles = {
     width: 'auto',
   },
   inputDefaultStyles: {
-    width: 'auto',
+    width: '100%',
     height: '100%',
-    border: 'none',
+    borderWidth: 0,
+    borderStyle: 'none',
     outline: 'none',
     padding: '0 8px',
   },
-}
+  paddingLeft: {
+    paddingLeft: 8,
+  },
+  paddingRight: {
+    paddingRight: 8,
+  },
+})
 
 type InputIconProps = {
   name: string
@@ -41,25 +60,23 @@ type InputIconProps = {
 }
 
 interface InputProps extends HTMLAttributes<HTMLInputElement> {
+  id?: string
   value: string
-  width?: number | string
-  height?: number | string
   type?: 'text' | 'number' | 'password'
   leftIconProps?: InputIconProps
   rightIconProps?: InputIconProps
-  inputWrapperStyles?: React.CSSProperties
-  inputStyles?: React.CSSProperties
-  leftIconStyles?: React.CSSProperties
-  rightIconStyles?: React.CSSProperties
+  inputWrapperStyles: stylex.StyleXStyles
+  inputStyles?: stylex.StyleXStyles
+  leftIconStyles?: stylex.StyleXStyles
+  rightIconStyles?: stylex.StyleXStyles
   onChangeText: (text: string) => void
   onPressLeftIcon?: () => void
   onPressRightIcon?: () => void
 }
 
 const Input = ({
+  id,
   value,
-  width,
-  height,
   type,
   leftIconProps,
   rightIconProps,
@@ -76,19 +93,14 @@ const Input = ({
     return onChangeText(e.target.value)
   }
   return (
-    <div
-      id="input"
-      className="input"
-      style={{
-        ...inputWrapperStyles,
-        width,
-        height,
-        ...styles.wrapper,
-      }}
-    >
+    <div id={id} {...stylex.props(styles.wrapper, inputWrapperStyles)}>
       {leftIconProps && (
         <div
-          style={{ ...styles.iconWrapper, ...leftIconStyles, paddingLeft: 8 }}
+          {...stylex.props(
+            styles.leftIconWrapper,
+            leftIconStyles || {},
+            styles.paddingLeft
+          )}
         >
           <Icon
             name={leftIconProps?.name}
@@ -105,16 +117,17 @@ const Input = ({
         width="100%"
         height="100%"
         value={value}
-        style={{
-          ...styles.inputDefaultStyles,
-          ...inputStyles,
-        }}
         onChange={onChange}
         {...props}
+        {...stylex.props(styles.inputDefaultStyles, inputStyles || {})}
       />
       {rightIconProps && (
         <div
-          style={{ ...styles.iconWrapper, ...rightIconStyles, paddingRight: 8 }}
+          {...stylex.props(
+            styles.rightIconWrapper,
+            rightIconStyles || {},
+            styles.paddingRight
+          )}
         >
           <Icon
             name={rightIconProps?.name}

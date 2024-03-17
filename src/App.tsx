@@ -3,48 +3,55 @@ import Button from './CoreComponents/ButtonComponent/Button'
 import Icon from './CoreComponents/IconComponent/Icon'
 import Input from './CoreComponents/InputComponent/Input'
 import Text from './CoreComponents/TextComponent/Text'
+import * as stylex from '@stylexjs/stylex'
 
-const styles = {
+const Styles = stylex.create({
   wrapper: {
     width: '100vw',
     height: '100vh',
     maxWidth: '100%',
     backgroundColor: 'lightblue',
   },
-}
+  inputWrapperStyles: {
+    width: '400px',
+  },
+  inputStyles: {
+    color: 'blue',
+    fontSize: 20,
+  },
+  buttonTExtStyles: {
+    color: 'black',
+  },
+  textStyles: {
+    marginTop: 20,
+    color: 'green',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  buttonStyles: {
+    backgroundColor: 'green',
+    width: 200,
+    height: 50,
+  },
+})
 
 function App() {
   const [text, setText] = useState('')
   return (
-    <div style={styles.wrapper}>
+    <div {...stylex.props(Styles.wrapper)}>
       <Button
-        width="300px"
-        height="50px"
         text="Button"
         leftElement={<Text text="Left" />}
-        centerElement={<Text text="Center" />}
         rightElement={<Text text="Right" />}
-        buttonStyles={{ backgroundColor: 'green', borderRadius: 20 }}
-        textStyles={{ color: 'black' }}
+        buttonStyles={Styles.buttonStyles}
+        textStyles={Styles.buttonTExtStyles}
         onClick={() => {}}
         onMouseDown={() => alert('mouse down')}
       />
       <Text
         clickable
         text={`Hello\n World`}
-        fontSize={20}
-        fontWeight="bold"
-        color="black"
-        textStyles={{ marginTop: 20 }}
-        onMouseDown={() => alert('mouse down')}
-      />
-      <Text
-        clickable
-        text={`Hello\n World`}
-        fontSize={20}
-        fontWeight="bold"
-        color="black"
-        textStyles={{ marginTop: 20 }}
+        textStyles={Styles.textStyles}
         onMouseDown={() => alert('mouse down')}
       />
       <Icon name="add" width={20} height={20} color="red" />
@@ -65,7 +72,8 @@ function App() {
           height: 20,
           stroke: 'black',
         }}
-        inputStyles={{ color: 'blue', fontSize: 20 }}
+        inputWrapperStyles={Styles.inputWrapperStyles}
+        inputStyles={Styles.inputStyles}
       />
     </div>
   )

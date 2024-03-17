@@ -17,7 +17,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react', '@typescript-eslint'],
+  plugins: ['react', '@typescript-eslint', '@stylexjs'],
   rules: {
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-unused-vars': ['error'],
@@ -26,6 +26,7 @@ module.exports = {
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@stylexjs/valid-styles': ['error'],
   },
   settings: {
     react: {
