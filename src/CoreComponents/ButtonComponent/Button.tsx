@@ -72,6 +72,7 @@ interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   centerElementStyles?: stylex.StyleXStyles
   rightElementStyles?: stylex.StyleXStyles
   isDisabled?: boolean
+  onClick: () => void
 }
 
 function Button({
@@ -86,12 +87,14 @@ function Button({
   centerElementStyles,
   rightElementStyles,
   isDisabled,
+  onClick,
   ...props
 }: ButtonProps) {
   return (
     <button
       id={id}
       disabled={isDisabled}
+      onClick={() => (isDisabled ? undefined : onClick())}
       {...props}
       {...stylex.props(
         styles.buttonWrapper,

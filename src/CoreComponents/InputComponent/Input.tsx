@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react'
+import React, { HTMLAttributes, useState } from 'react'
 import Icon from '../IconComponent/Icon'
 import * as stylex from '@stylexjs/stylex'
 
@@ -61,7 +61,7 @@ type InputIconProps = {
 
 interface InputProps extends HTMLAttributes<HTMLInputElement> {
   id?: string
-  value: string
+  value?: string
   type?: 'text' | 'number' | 'password'
   leftIconProps?: InputIconProps
   rightIconProps?: InputIconProps
@@ -89,7 +89,10 @@ const Input = ({
   onPressRightIcon,
   ...props
 }: InputProps) => {
+  const [inputValue, setInputValue] = useState(value || '')
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value)
     return onChangeText(e.target.value)
   }
   return (
@@ -116,7 +119,7 @@ const Input = ({
         type={type ? (type as string) : 'text'}
         width="100%"
         height="100%"
-        value={value}
+        value={inputValue}
         onChange={onChange}
         {...props}
         {...stylex.props(styles.inputDefaultStyles, inputStyles || {})}
