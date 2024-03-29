@@ -32,10 +32,12 @@ const Styles = stylex.create({
   },
 })
 const Welcome = () => {
-  const [location, setLocation] = useLocation()
+  const [, setLocation] = useLocation()
   return (
     <div>
-      <h1 {...stylex.props(Styles.headerStyles)}>Welcome to the app</h1>
+      <h1 {...stylex.props(Styles.headerStyles)}>
+        Welcome to the app: this is the {process.env.NODE_ENV} environment
+      </h1>
       <Button text="Sign In" onClick={() => setLocation('/signin')} />
       <Button text="Sign Up" onClick={() => setLocation('/signup')} />
 
