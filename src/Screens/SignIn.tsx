@@ -9,7 +9,7 @@ const Styles = stylex.create({
 })
 
 const SignIn = () => {
-  const [location, setLocation] = useLocation()
+  const [, setLocation] = useLocation()
   return (
     <div>
       <h1 {...stylex.props(Styles.headerStyles)}>Sign In</h1>
