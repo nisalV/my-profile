@@ -9,7 +9,7 @@ const Styles = stylex.create({
 })
 
 const FogotPassword = () => {
-  const [location, setLocation] = useLocation()
+  const [, setLocation] = useLocation()
   return (
     <div>
       <h1 {...stylex.props(Styles.headerStyles)}>Forgot Password</h1>

@@ -9,7 +9,7 @@ const Styles = stylex.create({
 })
 
 const SignUp = () => {
-  const [location, setLocation] = useLocation()
+  const [, setLocation] = useLocation()
   return (
     <div>
       <h1 {...stylex.props(Styles.headerStyles)}>SignUp</h1>
