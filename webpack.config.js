@@ -57,7 +57,7 @@ module.exports = (env) => {
       }),
       new StylexPlugin({
         filename: 'styles.[contenthash].css',
-        dev: mode === 'development',
+        dev: true,
       }),
     ],
     devServer: {
