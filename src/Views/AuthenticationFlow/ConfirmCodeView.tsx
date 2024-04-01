@@ -1,10 +1,10 @@
+import { useCallback } from 'react'
 import stylex from '@stylexjs/stylex'
 import Input from '../../CoreComponents/InputComponent/Input'
 import Button from '../../CoreComponents/ButtonComponent/Button'
 import { signInUser, signUpConfirmation } from '../../Common/Authentication'
 import { SignUpUserData } from '../../Common/types'
 import { useLocation } from 'wouter'
-import { useCallback } from 'react'
 
 const Styles = stylex.create({
   headerStyles: {
@@ -42,6 +42,7 @@ const ConfirmCodeView = ({ userData, onChangeCode }: ConfirmCodeViewProps) => {
         })
       : alert('Please fill the code field')
   }, [userData])
+
   return (
     <>
       <h1 {...stylex.props(Styles.headerStyles)}>Confirm Sign Up</h1>
@@ -56,7 +57,7 @@ const ConfirmCodeView = ({ userData, onChangeCode }: ConfirmCodeViewProps) => {
       <Button
         text="Confirm"
         buttonStyles={Styles.buttonStyles}
-        onClick={() => confirmSignUpAndSignIn}
+        onClick={confirmSignUpAndSignIn}
       />
       <Button text="Resend code" onClick={() => {}} />
     </>

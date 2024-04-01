@@ -144,11 +144,6 @@ export async function currentAuthenticatedUser({
 }: CurrentAuthenticatedUserProps) {
   try {
     const currentUser = await getCurrentUser()
-    if (!currentUser) {
-      signOutUser({
-        onSuccessSignOut: () => onSuccessSignOut && onSuccessSignOut(),
-      })
-    }
   } catch (err) {}
 }
 
@@ -157,13 +152,5 @@ export async function currentSession({
 }: CurrentAuthenticatedUserProps) {
   try {
     const currentSession = await fetchAuthSession()
-    if (
-      !currentSession?.tokens?.idToken ||
-      !currentSession?.tokens?.accessToken
-    ) {
-      signOutUser({
-        onSuccessSignOut: () => onSuccessSignOut && onSuccessSignOut(),
-      })
-    }
   } catch (err) {}
 }

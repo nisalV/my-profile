@@ -23,8 +23,6 @@ const Styles = stylex.create({
 const queryClient = new QueryClient()
 
 function App() {
-  currentAuthenticatedUser({})
-  currentSession({})
   return (
     <QueryClientProvider client={queryClient}>
       <div {...stylex.props(Styles.wrapper)}>
