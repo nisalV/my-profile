@@ -39,6 +39,7 @@ const SignInView = ({
         })
       : alert('Please enter email and password')
   }, [userData])
+
   return (
     <>
       <h1 {...stylex.props(Styles.headerStyles)}>Sign In</h1>
