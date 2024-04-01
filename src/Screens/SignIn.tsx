@@ -1,25 +1,18 @@
-import { useLocation } from 'wouter'
-import Button from '../CoreComponents/ButtonComponent/Button'
-import * as stylex from '@stylexjs/stylex'
-
-const Styles = stylex.create({
-  headerStyles: {
-    marginVertical: 0,
-  },
-})
+import { useRef } from 'react'
+import SignInView from '../Views/AuthenticationFlow/SignInView'
 
 const SignIn = () => {
-  const [, setLocation] = useLocation()
+  const userData = useRef<{ email: string; password: string }>({
+    email: '',
+    password: '',
+  })
+
   return (
-    <div>
-      <h1 {...stylex.props(Styles.headerStyles)}>Sign In</h1>
-      <Button text="Go To Sign In" onClick={() => setLocation('/signin')} />
-      <Button
-        text="Fogot Password"
-        onClick={() => setLocation('/fogot-password')}
-      />
-      <Button text="Go To Welcome" onClick={() => setLocation('/')} />
-    </div>
+    <SignInView
+      userData={userData.current}
+      onChangeEmail={(text: string) => (userData.current.email = text)}
+      onChangePassword={(text: string) => (userData.current.password = text)}
+    />
   )
 }
 

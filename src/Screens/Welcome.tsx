@@ -13,7 +13,7 @@ const Styles = stylex.create({
     color: 'blue',
     fontSize: 20,
   },
-  buttonTExtStyles: {
+  buttonTextStyles: {
     color: 'black',
   },
   textStyles: {
@@ -38,15 +38,17 @@ const Welcome = () => {
       <h1 {...stylex.props(Styles.headerStyles)}>
         Welcome to the app: this is the {process.env.NODE_ENV} environment
       </h1>
+      <div style={{ height: 20 }} />
       <Button text="Sign In" onClick={() => setLocation('/signin')} />
+      <div style={{ height: 20 }} />
       <Button text="Sign Up" onClick={() => setLocation('/signup')} />
-
+      <div style={{ height: 20 }} />
       <Button
         text="Button"
         leftElement={<Text text="Left" />}
         rightElement={<Text text="Right" />}
         buttonStyles={Styles.buttonStyles}
-        textStyles={Styles.buttonTExtStyles}
+        textStyles={Styles.buttonTextStyles}
         onClick={() => {}}
         onMouseDown={() => alert('mouse down')}
       />
