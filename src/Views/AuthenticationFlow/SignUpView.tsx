@@ -36,6 +36,7 @@ const SignUpView = ({
   setShowConfirmSignUp,
 }: SignUpViewProps) => {
   const [, setLocation] = useLocation()
+
   const signUp = useCallback(async () => {
     userData.email?.trim()?.length > 0 &&
     userData.firstName?.trim()?.length > 0 &&
@@ -51,6 +52,7 @@ const SignUpView = ({
         })
       : alert('Please fill all fields')
   }, [userData])
+
   return (
     <>
       <h1 {...stylex.props(Styles.headerStyles)}>Sign Up</h1>
