@@ -62,6 +62,7 @@ const styles = stylex.create({
 
 interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   id?: string
+  type?: 'button' | 'submit' | 'reset'
   text?: string
   leftElement?: JSX.Element
   centerElement?: JSX.Element
@@ -77,6 +78,7 @@ interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
 
 function Button({
   id,
+  type,
   text,
   leftElement: LeftElement,
   centerElement: CenterElement,
@@ -93,6 +95,7 @@ function Button({
   return (
     <button
       id={id}
+      type={type}
       disabled={isDisabled}
       onClick={() => (isDisabled ? undefined : onClick())}
       {...props}

@@ -42,12 +42,16 @@ const styles = stylex.create({
     borderStyle: 'none',
     outline: 'none',
     padding: '0 8px',
+    fontSize: '15px',
   },
   paddingLeft: {
     paddingLeft: 8,
   },
   paddingRight: {
     paddingRight: 8,
+  },
+  wrapperDefultStyles: {
+    width: '200px',
   },
 })
 
@@ -63,6 +67,7 @@ interface InputProps extends HTMLAttributes<HTMLInputElement> {
   id?: string
   value?: string
   type?: 'text' | 'number' | 'password'
+  placeholder?: string
   leftIconProps?: InputIconProps
   rightIconProps?: InputIconProps
   inputWrapperStyles: stylex.StyleXStyles
@@ -78,6 +83,7 @@ const Input = ({
   id,
   value,
   type,
+  placeholder,
   leftIconProps,
   rightIconProps,
   inputWrapperStyles,
@@ -96,7 +102,13 @@ const Input = ({
     return onChangeText(e.target.value)
   }
   return (
-    <div id={id} {...stylex.props(styles.wrapper, inputWrapperStyles)}>
+    <div
+      id={id}
+      {...stylex.props(
+        styles.wrapper,
+        inputWrapperStyles || styles.wrapperDefultStyles
+      )}
+    >
       {leftIconProps && (
         <div
           {...stylex.props(
@@ -120,6 +132,7 @@ const Input = ({
         width="100%"
         height="100%"
         value={inputValue}
+        placeholder={placeholder}
         onChange={onChange}
         {...props}
         {...stylex.props(styles.inputDefaultStyles, inputStyles || {})}
