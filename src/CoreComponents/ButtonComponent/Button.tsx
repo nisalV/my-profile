@@ -1,6 +1,7 @@
 import { HTMLAttributes } from 'react'
 import Text from '../TextComponent/Text'
 import * as stylex from '@stylexjs/stylex'
+import Loader from '../Loader/Loader'
 
 const styles = stylex.create({
   buttonWrapper: {
@@ -23,6 +24,10 @@ const styles = stylex.create({
     borderWidth: 0,
     padding: '5px',
   },
+  loadingItemStyles: {
+    overflow: 'visible',
+    height: 'fit-content',
+  },
   innerItemCommonStyles: {
     display: 'flex',
     alignItems: 'center',
@@ -43,6 +48,7 @@ const styles = stylex.create({
   },
   cursorDefault: {
     cursor: 'default',
+    backgroundPosition: 'bottom',
   },
   cursorPointer: {
     cursor: 'pointer',
@@ -73,6 +79,7 @@ interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   centerElementStyles?: stylex.StyleXStyles
   rightElementStyles?: stylex.StyleXStyles
   isDisabled?: boolean
+  isLoading?: boolean
   onClick: () => void
 }
 
@@ -89,6 +96,7 @@ function Button({
   centerElementStyles,
   rightElementStyles,
   isDisabled,
+  isLoading,
   onClick,
   ...props
 }: ButtonProps) {
@@ -123,23 +131,28 @@ function Button({
             {LeftElement}
           </div>
         )}
-        {(text || CenterElement) && (
+        {text || CenterElement ? (
           <div
             {...stylex.props(
               LeftElement && styles.paddingLeft,
               RightElement && styles.paddingRight,
               centerElementStyles,
               styles.innerItemCommonStyles,
-              styles.hideOverflow
+              styles.hideOverflow,
+              isLoading && styles.loadingItemStyles
             )}
           >
-            {text ? (
+            {isLoading ? (
+              <Loader size={'25px'} />
+            ) : text ? (
               <Text oneLine text={text} textStyles={textStyles} />
             ) : (
               CenterElement
             )}
           </div>
-        )}
+        ) : isLoading ? (
+          <Loader />
+        ) : null}
         {RightElement && (
           <div
             {...stylex.props(rightElementStyles, styles.innerItemCommonStyles)}
