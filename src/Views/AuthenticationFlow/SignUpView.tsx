@@ -5,7 +5,7 @@ import { signUpUser } from '../../Common/Authentication'
 import { SignUpUserData } from '../../Common/types'
 import { useLocation } from 'wouter'
 import Spacer from '../../CoreComponents/Spacer/Spacer'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 const Styles = stylex.create({
   headerStyles: {
@@ -36,6 +36,7 @@ const SignUpView = ({
   setShowConfirmSignUp,
 }: SignUpViewProps) => {
   const [, setLocation] = useLocation()
+  const [isLoading, setIsLoading] = useState(false)
 
   const signUp = useCallback(async () => {
     userData.email?.trim()?.length > 0 &&
@@ -49,6 +50,7 @@ const SignUpView = ({
           password: userData.password,
           onSuccess: () => setShowConfirmSignUp(true),
           onError: (error) => console.log('signUpUser error: ', error),
+          setLoading: setIsLoading,
         })
       : alert('Please fill all fields')
   }, [userData])
@@ -88,18 +90,23 @@ const SignUpView = ({
       <Spacer height={40} />
       <Button
         text="Sign Up"
+        isDisabled={isLoading}
+        isLoading={isLoading}
         buttonStyles={Styles.buttonStyles}
         onClick={signUp}
       />
       <Spacer height={50} />
-      <Button text="Go To Sign In" onClick={() => setLocation('/signin')} />
-      <Spacer height={10} />
       <Button
-        text="Fogot Password"
-        onClick={() => setLocation('/fogot-password')}
+        text="Go To Sign In"
+        isDisabled={isLoading}
+        onClick={() => setLocation('/signin')}
       />
       <Spacer height={10} />
-      <Button text="Go To Welcome" onClick={() => setLocation('/')} />
+      <Button
+        text="Go To Welcome"
+        isDisabled={isLoading}
+        onClick={() => setLocation('/')}
+      />
     </>
   )
 }

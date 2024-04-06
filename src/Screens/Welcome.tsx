@@ -4,6 +4,7 @@ import Icon from '../CoreComponents/IconComponent/Icon'
 import Input from '../CoreComponents/InputComponent/Input'
 import Text from '../CoreComponents/TextComponent/Text'
 import * as stylex from '@stylexjs/stylex'
+import Loader from '../CoreComponents/Loader/Loader'
 
 const Styles = stylex.create({
   inputWrapperStyles: {
@@ -78,6 +79,7 @@ const Welcome = () => {
         inputWrapperStyles={Styles.inputWrapperStyles}
         inputStyles={Styles.inputStyles}
       />
+      <Loader size={'30px'} />
     </div>
   )
 }
