@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import stylex from '@stylexjs/stylex'
 import Input from '../../CoreComponents/InputComponent/Input'
 import Button from '../../CoreComponents/ButtonComponent/Button'
@@ -24,6 +24,7 @@ type ConfirmCodeViewProps = {
 
 const ConfirmCodeView = ({ userData, onChangeCode }: ConfirmCodeViewProps) => {
   const [, setLocation] = useLocation()
+  const [isLoading, setIsLoading] = useState(false)
 
   const confirmSignUpAndSignIn = useCallback(async () => {
     userData.code?.trim()?.length > 0
@@ -37,8 +38,10 @@ const ConfirmCodeView = ({ userData, onChangeCode }: ConfirmCodeViewProps) => {
               password: userData.password,
               onSuccess: () => setLocation('/home'),
               onError: (error) => console.log('signInUser error: ', error),
+              setLoading: setIsLoading,
             }),
           onError: (error) => console.log('signUpConfirmation error: ', error),
+          setLoading: setIsLoading,
         })
       : alert('Please fill the code field')
   }, [userData])
@@ -56,10 +59,12 @@ const ConfirmCodeView = ({ userData, onChangeCode }: ConfirmCodeViewProps) => {
       <div style={{ height: 40 }} />
       <Button
         text="Confirm"
+        isDisabled={isLoading}
+        isLoading={isLoading}
         buttonStyles={Styles.buttonStyles}
         onClick={confirmSignUpAndSignIn}
       />
-      <Button text="Resend code" onClick={() => {}} />
+      <Button text="Resend code" isDisabled={isLoading} onClick={() => {}} />
     </>
   )
 }

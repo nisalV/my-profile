@@ -2,7 +2,10 @@ import {
   signIn,
   signUp,
   signOut,
+  resendSignUpCode,
+  resetPassword,
   confirmSignUp,
+  confirmResetPassword,
   getCurrentUser,
   fetchAuthSession,
 } from 'aws-amplify/auth'
@@ -24,6 +27,7 @@ type SignUpProps = {
   email: string
   password: string
   onSuccess: () => void
+  setLoading: (loading: boolean) => void
   onError?: (error: any) => void
 }
 
@@ -33,8 +37,10 @@ export async function signUpUser({
   email,
   password,
   onSuccess,
+  setLoading,
   onError,
 }: SignUpProps) {
+  setLoading(true)
   try {
     await signUp({
       username: email,
@@ -54,16 +60,19 @@ export async function signUpUser({
           : onError && onError({ message: 'User not created' })
       )
       .catch((error) => onError && onError(error))
+      .finally(() => setLoading(false))
   } catch (error) {
     onError && onError(error)
+    setLoading(false)
   }
 }
 
-type signUpConfirmationProps = {
+type SignUpConfirmationProps = {
   username: string
   password: string
   confirmationCode: string
   onSuccess: () => void
+  setLoading: (loading: boolean) => void
   onError?: (error: any) => void
 }
 
@@ -71,8 +80,10 @@ export async function signUpConfirmation({
   username,
   confirmationCode,
   onSuccess,
+  setLoading,
   onError,
-}: signUpConfirmationProps) {
+}: SignUpConfirmationProps) {
+  setLoading(true)
   try {
     await confirmSignUp({
       username,
@@ -84,15 +95,43 @@ export async function signUpConfirmation({
           : onError && onError({ message: 'User not signed up' })
       )
       .catch((error) => onError && onError(error))
+      .finally(() => setLoading(false))
   } catch (error) {
     onError && onError(error)
+    setLoading(false)
   }
 }
 
-type signInProps = {
+type ResendSignUpCodeProps = {
+  email: string
+  onSuccess: () => void
+  setLoading: (loading: boolean) => void
+  onError?: (error: any) => void
+}
+
+export async function resendSignUpCodeUser({
+  email,
+  onSuccess,
+  setLoading,
+  onError,
+}: ResendSignUpCodeProps) {
+  setLoading(true)
+  try {
+    await resendSignUpCode({ username: email })
+      .then(() => onSuccess())
+      .catch((error) => onError && onError(error))
+      .finally(() => setLoading(false))
+  } catch (error) {
+    onError && onError(error)
+    setLoading(false)
+  }
+}
+
+type SignInProps = {
   username: string
   password: string
   onSuccess: () => void
+  setLoading: (loading: boolean) => void
   onError?: (error: any) => void
 }
 
@@ -100,8 +139,10 @@ export async function signInUser({
   username,
   password,
   onSuccess,
+  setLoading,
   onError,
-}: signInProps) {
+}: SignInProps) {
+  setLoading(true)
   try {
     await signIn({
       username,
@@ -113,44 +154,132 @@ export async function signInUser({
           : onError && onError({ message: 'User not signed in' })
       )
       .catch((error) => onError && onError(error))
+      .finally(() => setLoading(false))
   } catch (error) {
     onError && onError(error)
+    setLoading(false)
   }
 }
 
 type SignOutUserProps = {
+  setLoading: (loading: boolean) => void
   onSuccessSignOut?: () => void
   onError?: (error: any) => void
 }
 
 export async function signOutUser({
+  setLoading,
   onSuccessSignOut,
   onError,
 }: SignOutUserProps) {
+  setLoading(true)
   try {
     await signOut()
       .then(onSuccessSignOut && onSuccessSignOut)
       .catch(onError && onError)
+      .finally(() => setLoading(false))
   } catch (error) {
     onError && onError(error)
+    setLoading(false)
+  }
+}
+
+type ResetPasswordProps = {
+  username: string
+  onSuccess: () => void
+  setLoading: (loading: boolean) => void
+  onError?: (error: any) => void
+}
+
+export async function resetUserPassword({
+  username,
+  onSuccess,
+  setLoading,
+  onError,
+}: ResetPasswordProps) {
+  setLoading(true)
+  try {
+    await resetPassword({ username })
+      .then((output) => {
+        if (
+          output.nextStep.resetPasswordStep ===
+          'CONFIRM_RESET_PASSWORD_WITH_CODE'
+        ) {
+          onSuccess()
+        } else {
+          onError && onError({ message: 'User can not be reset' })
+        }
+      })
+      .catch(
+        (error) => onError && onError(error?.message || 'User can not be reset')
+      )
+      .finally(() => setLoading(false))
+  } catch (error) {
+    onError && onError(error)
+    setLoading(false)
+  }
+}
+
+type ConfirmResetPasswordProps = {
+  username: string
+  newPassword: string
+  confirmationCode: string
+  onSuccess: () => void
+  setLoading: (loading: boolean) => void
+  onError?: (error: any) => void
+}
+
+export async function confirmResetUserPassword({
+  username,
+  newPassword,
+  confirmationCode,
+  onSuccess,
+  setLoading,
+  onError,
+}: ConfirmResetPasswordProps) {
+  setLoading(true)
+  try {
+    await confirmResetPassword({ username, newPassword, confirmationCode })
+      .then(() => onSuccess())
+      .catch((error) => onError && onError(error?.message))
+      .finally(() => setLoading(false))
+  } catch (error) {
+    onError && onError(error)
+    setLoading(false)
   }
 }
 
 type CurrentAuthenticatedUserProps = {
-  onSuccessSignOut?: () => void
+  currentUser: (user: string | null) => void
 }
 export async function currentAuthenticatedUser({
-  onSuccessSignOut,
+  currentUser,
 }: CurrentAuthenticatedUserProps) {
   try {
-    const currentUser = await getCurrentUser()
-  } catch (err) {}
+    const { userId, username } = await getCurrentUser()
+    if (userId && username) {
+      currentUser(userId)
+    } else {
+      currentUser(null)
+    }
+  } catch (err) {
+    currentUser(null)
+  }
 }
 
-export async function currentSession({
-  onSuccessSignOut,
-}: CurrentAuthenticatedUserProps) {
+type CurrentSessionProps = {
+  currentSession: (tokens: any) => void
+}
+
+export async function currentSession({ currentSession }: CurrentSessionProps) {
   try {
-    const currentSession = await fetchAuthSession()
-  } catch (err) {}
+    const { tokens } = await fetchAuthSession()
+    if (tokens) {
+      currentSession(tokens)
+    } else {
+      currentSession(null)
+    }
+  } catch (err) {
+    currentSession(null)
+  }
 }

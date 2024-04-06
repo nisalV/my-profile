@@ -2,7 +2,7 @@ import stylex from '@stylexjs/stylex'
 import Input from '../../CoreComponents/InputComponent/Input'
 import Button from '../../CoreComponents/ButtonComponent/Button'
 import { useLocation } from 'wouter'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { signInUser } from '../../Common/Authentication'
 import Spacer from '../../CoreComponents/Spacer/Spacer'
 
@@ -14,6 +14,10 @@ const Styles = stylex.create({
     backgroundColor: 'green',
     width: 200,
     height: 40,
+  },
+  subButtonStyles: {
+    backgroundColor: 'transparent',
+    background: 'transparent',
   },
 })
 
@@ -28,6 +32,9 @@ const SignInView = ({
   onChangePassword,
 }: SignInViewProps) => {
   const [, setLocation] = useLocation()
+  const [isLoading, setIsLoading] = useState(false)
+
+  console.log('isLoading: ', isLoading)
 
   const signIn = useCallback(async () => {
     userData.email?.trim()?.length > 0 && userData.password?.trim()?.length > 0
@@ -36,6 +43,7 @@ const SignInView = ({
           password: userData.password,
           onSuccess: () => setLocation('/home'),
           onError: (error) => console.log('signInUser error: ', error),
+          setLoading: setIsLoading,
         })
       : alert('Please enter email and password')
   }, [userData])
@@ -61,18 +69,32 @@ const SignInView = ({
       <Spacer height={40} />
       <Button
         text="Sign In"
+        isDisabled={isLoading}
+        isLoading={isLoading}
         buttonStyles={Styles.buttonStyles}
         onClick={signIn}
       />
       <Spacer height={50} />
-      <Button text="Go To Sign Up" onClick={() => setLocation('/signup')} />
+      <Button
+        text="Go To Sign Up"
+        isDisabled={isLoading}
+        buttonStyles={Styles.subButtonStyles}
+        onClick={() => setLocation('/signup')}
+      />
       <Spacer height={10} />
       <Button
         text="Fogot Password"
+        isDisabled={isLoading}
+        buttonStyles={Styles.subButtonStyles}
         onClick={() => setLocation('/fogot-password')}
       />
       <Spacer height={10} />
-      <Button text="Go To Welcome" onClick={() => setLocation('/')} />
+      <Button
+        text="Go To Welcome"
+        isDisabled={isLoading}
+        buttonStyles={Styles.subButtonStyles}
+        onClick={() => setLocation('/')}
+      />
     </>
   )
 }

@@ -2,6 +2,7 @@ import * as stylex from '@stylexjs/stylex'
 import Button from '../CoreComponents/ButtonComponent/Button'
 import { signOutUser } from '../Common/Authentication'
 import { useLocation } from 'wouter'
+import { useCallback, useState } from 'react'
 
 const Styles = stylex.create({
   inputWrapperStyles: {
@@ -31,6 +32,17 @@ const Styles = stylex.create({
 })
 const Home = () => {
   const [, setLocation] = useLocation()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const signOut = useCallback(
+    () =>
+      signOutUser({
+        onSuccessSignOut: () => setLocation('/'),
+        setLoading: setIsLoading,
+      }),
+    []
+  )
+
   return (
     <div>
       <h1 {...stylex.props(Styles.headerStyles)}>
@@ -38,12 +50,10 @@ const Home = () => {
       </h1>
       <Button
         text="Sign Out"
+        isDisabled={isLoading}
+        isLoading={isLoading}
         buttonStyles={Styles.buttonStyles}
-        onClick={() =>
-          signOutUser({
-            onSuccessSignOut: () => setLocation('/'),
-          })
-        }
+        onClick={signOut}
       />
     </div>
   )
