@@ -1,0 +1,17 @@
+name: AWS CodeBuild DEV
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  My-Profile-Dev-Build:
+    runs-on: codebuild-MyProfileDev-${{ github.run_id }}-${{ github.run_attempt }}
+
+    steps:
+    - name: Build
+      run: |
+        yarn install
+        yarn webpack --env env=dev --config webpack.config.js
