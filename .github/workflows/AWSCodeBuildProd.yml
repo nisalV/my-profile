@@ -7,7 +7,7 @@ on:
     branches: [ "prod" ]
 
 jobs:
-  My-Profile-Dev-Build:
+  My-Profile-Prod-Build:
     runs-on: codebuild-MyProfileProd-${{ github.run_id }}-${{ github.run_attempt }}
 
     steps:
