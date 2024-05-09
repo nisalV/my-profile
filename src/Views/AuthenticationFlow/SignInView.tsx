@@ -34,8 +34,6 @@ const SignInView = ({
   const [, setLocation] = useLocation()
   const [isLoading, setIsLoading] = useState(false)
 
-  console.log('isLoading: ', isLoading)
-
   const signIn = useCallback(async () => {
     userData.email?.trim()?.length > 0 && userData.password?.trim()?.length > 0
       ? await signInUser({
@@ -44,6 +42,7 @@ const SignInView = ({
           onSuccess: () => setLocation('/home'),
           onError: (error) => console.log('signInUser error: ', error),
           setLoading: setIsLoading,
+          navigateToResetPassword: () => setLocation('/fogot-password'),
         })
       : alert('Please enter email and password')
   }, [userData])

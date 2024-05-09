@@ -133,6 +133,8 @@ type SignInProps = {
   onSuccess: () => void
   setLoading: (loading: boolean) => void
   onError?: (error: any) => void
+  navigateToResetPassword?: () => void
+  navigateToConfirmSignIn?: () => void
 }
 
 export async function signInUser({
@@ -141,6 +143,8 @@ export async function signInUser({
   onSuccess,
   setLoading,
   onError,
+  navigateToResetPassword,
+  navigateToConfirmSignIn,
 }: SignInProps) {
   setLoading(true)
   try {
@@ -149,9 +153,13 @@ export async function signInUser({
       password,
     })
       .then((response) =>
-        response?.isSignedIn
+        response?.nextStep?.signInStep === 'DONE'
           ? onSuccess()
-          : onError && onError({ message: 'User not signed in' })
+          : response?.nextStep?.signInStep === 'RESET_PASSWORD'
+            ? navigateToResetPassword && navigateToResetPassword()
+            : response?.nextStep?.signInStep?.startsWith('CONFIRM')
+              ? navigateToConfirmSignIn && navigateToConfirmSignIn()
+              : onError && onError({ message: 'User not signed in' })
       )
       .catch((error) => onError && onError(error))
       .finally(() => setLoading(false))

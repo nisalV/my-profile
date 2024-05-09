@@ -1,22 +1,17 @@
-import { useLocation } from 'wouter'
-import Button from '../CoreComponents/ButtonComponent/Button'
-import * as stylex from '@stylexjs/stylex'
-
-const Styles = stylex.create({
-  headerStyles: {
-    marginVertical: 0,
-  },
-})
+import { useState } from 'react'
+import ConfirmEmailView from '../Views/AuthenticationFlow/ConfirmEmailView'
+import ConfirmPasswordView from '../Views/AuthenticationFlow/ConfirmPasswordView'
 
 const FogotPassword = () => {
-  const [, setLocation] = useLocation()
+  const [email, setEmail] = useState<string | null>(null)
   return (
-    <div>
-      <h1 {...stylex.props(Styles.headerStyles)}>Forgot Password</h1>
-      <Button text="Go To Sign In" onClick={() => setLocation('/signin')} />
-      <Button text="Go To Sign Up" onClick={() => setLocation('/signup')} />
-      <Button text="Go To Welcome" onClick={() => setLocation('/')} />
-    </div>
+    <>
+      {!email ? (
+        <ConfirmEmailView setEmail={setEmail} />
+      ) : (
+        <ConfirmPasswordView email={email} />
+      )}
+    </>
   )
 }
 
