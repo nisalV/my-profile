@@ -14,12 +14,15 @@ const styles = stylex.create({
     borderRadius: 8,
     borderWidth: 1,
     borderStyle: 'solid',
-    borderColor: '#ccc',
+    borderColor: '#007bff',
     outline: {
       default: '2px solid transparent',
       ':hover': '2px solid #007bff',
     },
     transition: 'outline 0.2s ease',
+  },
+  focusStyles: {
+    outline: '2px solid #007bff',
   },
   leftIconWrapper: {
     display: 'flex',
@@ -97,6 +100,8 @@ const Input = ({
 }: InputProps) => {
   const [inputValue, setInputValue] = useState(value || '')
 
+  const [isFocused, setIsFocused] = useState(false)
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
     return onChangeText(e.target.value)
@@ -106,7 +111,8 @@ const Input = ({
       id={id}
       {...stylex.props(
         styles.wrapper,
-        inputWrapperStyles || styles.wrapperDefultStyles
+        inputWrapperStyles || styles.wrapperDefultStyles,
+        isFocused && styles.focusStyles
       )}
     >
       {leftIconProps && (
@@ -134,8 +140,10 @@ const Input = ({
         value={inputValue}
         placeholder={placeholder}
         onChange={onChange}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        {...stylex.props(styles.inputDefaultStyles, inputStyles && inputStyles)}
         {...props}
-        {...stylex.props(styles.inputDefaultStyles, inputStyles || {})}
       />
       {rightIconProps && (
         <div
