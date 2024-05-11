@@ -5,13 +5,54 @@ import Input from '../CoreComponents/InputComponent/Input'
 import Text from '../CoreComponents/TextComponent/Text'
 import * as stylex from '@stylexjs/stylex'
 import Loader from '../CoreComponents/Loader/Loader'
+import Spacer from '../CoreComponents/Spacer/Spacer'
 
-const Styles = stylex.create({
+const styles = stylex.create({
+  wrapper: {
+    width: '100%',
+    height: '100%',
+  },
+  headerWrapper: {
+    height: 70,
+    width: '100%',
+    display: 'flex',
+  },
+  headerAuthButtonWrapper: {
+    marginStart: 'auto',
+    alignItems: 'center',
+    display: 'flex',
+  },
+  headerSignInButtonStyles: {
+    width: 120,
+    height: 50,
+    background:
+      'linear-gradient(45deg, rgba(53,90,223,1) -20%, rgba(165,76,176,1) 75%)',
+    backgroundSize: '140px 50px',
+    backgroundPosition: {
+      default: '0px',
+      ':hover': '-20px',
+    },
+    transition: 'all 0.2s ease-in-out',
+  },
+  headerSignUpButtonStyles: {
+    width: 120,
+    height: 50,
+    background:
+      'linear-gradient(45deg, rgba(165,76,176,1) 10%, rgba(255,238,190,1) 105%)',
+    backgroundSize: '140px 50px',
+    backgroundPosition: {
+      default: '0px',
+      ':hover': '-20px',
+    },
+    transition: 'all 0.2s ease-in-out',
+  },
+  headerButtonTextStyles: {
+    fontSize: 20,
+  },
   inputWrapperStyles: {
     width: '400px',
   },
   inputStyles: {
-    color: 'blue',
     fontSize: 20,
   },
   buttonTextStyles: {
@@ -28,35 +69,43 @@ const Styles = stylex.create({
     width: 200,
     height: 50,
   },
-  headerStyles: {
-    marginVertical: 0,
-  },
 })
 const Welcome = () => {
   const [, setLocation] = useLocation()
   return (
-    <div>
-      <h1 {...stylex.props(Styles.headerStyles)}>
-        Welcome to the app: this is the {process.env.NODE_ENV} environment
-      </h1>
-      <div style={{ height: 20 }} />
-      <Button text="Sign In" onClick={() => setLocation('/signin')} />
-      <div style={{ height: 20 }} />
-      <Button text="Sign Up" onClick={() => setLocation('/signup')} />
-      <div style={{ height: 20 }} />
+    <div {...stylex.props(styles.wrapper)}>
+      <div {...stylex.props(styles.headerWrapper)}>
+        <div {...stylex.props(styles.headerAuthButtonWrapper)}>
+          <Text text={process.env.NODE_ENV || ''} />
+          <Button
+            text="Sign In"
+            buttonStyles={styles.headerSignInButtonStyles}
+            textStyles={styles.headerButtonTextStyles}
+            onClick={() => setLocation('/signin')}
+          />
+          <Spacer width={20} />
+          <Button
+            text="Sign Up"
+            buttonStyles={styles.headerSignUpButtonStyles}
+            textStyles={styles.headerButtonTextStyles}
+            onClick={() => setLocation('/signup')}
+          />
+          <Spacer width={20} />
+        </div>
+      </div>
       <Button
         text="Button"
         leftElement={<Text text="Left" />}
         rightElement={<Text text="Right" />}
-        buttonStyles={Styles.buttonStyles}
-        textStyles={Styles.buttonTextStyles}
+        buttonStyles={styles.buttonStyles}
+        textStyles={styles.buttonTextStyles}
         onClick={() => {}}
         onMouseDown={() => alert('mouse down')}
       />
       <Text
         clickable
         text={`Hello\n World`}
-        textStyles={Styles.textStyles}
+        textStyles={styles.textStyles}
         onMouseDown={() => alert('mouse down')}
       />
       <Icon name="add" width={20} height={20} color="red" />
@@ -76,8 +125,8 @@ const Welcome = () => {
           height: 20,
           stroke: 'black',
         }}
-        inputWrapperStyles={Styles.inputWrapperStyles}
-        inputStyles={Styles.inputStyles}
+        inputWrapperStyles={styles.inputWrapperStyles}
+        inputStyles={styles.inputStyles}
       />
       <Loader size={'30px'} />
     </div>

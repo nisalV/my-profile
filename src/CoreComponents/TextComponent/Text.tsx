@@ -2,15 +2,18 @@ import * as stylex from '@stylexjs/stylex'
 
 const styles = stylex.create({
   wrapper: {
-    margin: 0,
-    padding: 0,
+    margin: '0px 0px 0px 0px',
+    padding: '0px 0px 0px 0px',
     width: 'fit-content',
     height: 'fit-content',
     display: 'block',
     color: 'white',
-    fontWeight: 'normal',
+    fontWeight: 'lighter',
     fontSize: '15px',
     cursor: 'default',
+    fontFamily: `-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif`,
   },
   clickableTextStyles: {
     cursor: 'pointer',
@@ -55,7 +58,7 @@ const Text = ({
       {...stylex.props(
         styles.wrapper,
         clickable && styles.clickableTextStyles,
-        textStyles,
+        textStyles && textStyles,
         oneLine && styles.oneLineStyles,
         !oneLine && styles.lineBreak
       )}

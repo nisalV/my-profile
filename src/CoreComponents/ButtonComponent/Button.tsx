@@ -7,10 +7,11 @@ const styles = stylex.create({
   buttonWrapper: {
     margin: 0,
     borderWidth: 0,
-    borderRadius: 8,
-    backgroundColor: 'red',
-    background: 'linear-gradient(#0000, rgb(0 0 0/10%)) top/100% 800%',
-    backgroundPosition: { ':hover': 'bottom' },
+    borderRadius: 10,
+    boxShadow: {
+      default: '0px 0px 5px 0px rgba(0,0,0,0.4)',
+      ':hover': '0px 0px 10px 0px rgba(0,0,0,0.4)',
+    },
     transition: 'all 0.5s ease',
   },
   buttonConstantStyles: {
@@ -19,10 +20,12 @@ const styles = stylex.create({
     paddingInline: 0,
     position: 'relative' as const,
     display: 'block',
+    overflow: 'hidden',
   },
   contentContainerConstantStyles: {
     borderWidth: 0,
     padding: '5px',
+    overflow: 'hidden',
   },
   loadingItemStyles: {
     overflow: 'visible',
@@ -54,15 +57,15 @@ const styles = stylex.create({
     cursor: 'pointer',
   },
   buttonOverlayStyles: {
-    opacity: 0,
     top: 0,
     bottom: 0,
     left: 0,
     right: 0,
-    filter: 'alpha(opacity = 0)',
     position: 'absolute',
     display: 'block',
-    background: 'transparent',
+    background: 'linear-gradient(#0000, rgb(0 0 0/10%)) top/100% 800%',
+    backgroundPosition: { ':hover': 'bottom' },
+    transition: 'all 0.5s ease',
   },
 })
 
@@ -111,7 +114,6 @@ function Button({
         styles.buttonWrapper,
         isDisabled ? styles.cursorDefault : styles.cursorPointer,
         buttonStyles,
-        styles.hideOverflow,
         styles.buttonConstantStyles
       )}
     >
@@ -120,7 +122,6 @@ function Button({
         {...stylex.props(
           styles.innerItemCommonStyles,
           (LeftElement || RightElement) && styles.spaceBetween,
-          styles.hideOverflow,
           styles.contentContainerConstantStyles
         )}
       >
