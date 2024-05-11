@@ -6,10 +6,6 @@ import SignUp from './Screens/SignUp'
 import FogotPassword from './Screens/FogotPassword'
 import Home from './Screens/Home'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import {
-  currentAuthenticatedUser,
-  currentSession,
-} from './Common/Authentication'
 
 const Styles = stylex.create({
   wrapper: {
