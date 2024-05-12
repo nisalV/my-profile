@@ -25,7 +25,7 @@ function App() {
           <Route path="/" component={Welcome} />
           <Route path="/signin" component={SignIn} />
           <Route path="/signup" component={SignUp} />
-          <Route path="/fogot-password" component={FogotPassword} />
+          <Route path="/forgot-password" component={FogotPassword} />
           <Route path="/home" component={Home} />
         </Router>
       </div>

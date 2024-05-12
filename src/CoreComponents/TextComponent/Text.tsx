@@ -7,7 +7,6 @@ const styles = stylex.create({
     width: 'fit-content',
     height: 'fit-content',
     display: 'block',
-    color: 'white',
     fontWeight: 'lighter',
     fontSize: '15px',
     cursor: 'default',

@@ -6,6 +6,7 @@ import Text from '../CoreComponents/TextComponent/Text'
 import * as stylex from '@stylexjs/stylex'
 import Loader from '../CoreComponents/Loader/Loader'
 import Spacer from '../CoreComponents/Spacer/Spacer'
+import { buttonStyles } from '../Common/Styles/ButtonStyles'
 
 const styles = stylex.create({
   wrapper: {
@@ -21,33 +22,6 @@ const styles = stylex.create({
     marginStart: 'auto',
     alignItems: 'center',
     display: 'flex',
-  },
-  headerSignInButtonStyles: {
-    width: 120,
-    height: 50,
-    background:
-      'linear-gradient(45deg, rgba(53,90,223,1) -20%, rgba(165,76,176,1) 75%)',
-    backgroundSize: '140px 50px',
-    backgroundPosition: {
-      default: '0px',
-      ':hover': '-20px',
-    },
-    transition: 'all 0.2s ease-in-out',
-  },
-  headerSignUpButtonStyles: {
-    width: 120,
-    height: 50,
-    background:
-      'linear-gradient(45deg, rgba(165,76,176,1) 10%, rgba(255,238,190,1) 105%)',
-    backgroundSize: '140px 50px',
-    backgroundPosition: {
-      default: '0px',
-      ':hover': '-20px',
-    },
-    transition: 'all 0.2s ease-in-out',
-  },
-  headerButtonTextStyles: {
-    fontSize: 20,
   },
   inputWrapperStyles: {
     width: '400px',
@@ -79,15 +53,15 @@ const Welcome = () => {
           <Text text={process.env.NODE_ENV || ''} />
           <Button
             text="Sign In"
-            buttonStyles={styles.headerSignInButtonStyles}
-            textStyles={styles.headerButtonTextStyles}
+            buttonStyles={buttonStyles.headerSignInButtonStyles}
+            textStyles={buttonStyles.headerButtonTextStyles}
             onClick={() => setLocation('/signin')}
           />
           <Spacer width={20} />
           <Button
             text="Sign Up"
-            buttonStyles={styles.headerSignUpButtonStyles}
-            textStyles={styles.headerButtonTextStyles}
+            buttonStyles={buttonStyles.headerSignUpButtonStyles}
+            textStyles={buttonStyles.headerButtonTextStyles}
             onClick={() => setLocation('/signup')}
           />
           <Spacer width={20} />
