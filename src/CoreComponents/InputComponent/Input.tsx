@@ -1,28 +1,29 @@
 import React, { HTMLAttributes, useState } from 'react'
 import Icon from '../IconComponent/Icon'
 import * as stylex from '@stylexjs/stylex'
+import Text from '../TextComponent/Text'
 
 const styles = stylex.create({
   wrapper: {
     display: 'flex',
+    position: 'relative',
     flexDirection: 'row' as const,
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: 'white',
-    overflow: 'hidden',
-    padding: '10px 0px',
+    padding: '0px',
     borderRadius: 8,
     borderWidth: 1,
     borderStyle: 'solid',
-    borderColor: '#007bff',
+    borderColor: 'rgba(53,90,223,0.7)',
     outline: {
       default: '2px solid transparent',
-      ':hover': '2px solid #007bff',
+      ':hover': '2px solid rgba(53,90,223,0.7)',
     },
-    transition: 'outline 0.2s ease',
+    transition: 'outline 0.2s ease-in-out',
   },
   focusStyles: {
-    outline: '2px solid #007bff',
+    outline: '2px solid rgba(53,90,223,0.7)',
   },
   leftIconWrapper: {
     display: 'flex',
@@ -39,13 +40,14 @@ const styles = stylex.create({
     width: 'auto',
   },
   inputDefaultStyles: {
+    borderRadius: 8,
+    borderWidth: 0,
     width: '100%',
     height: '100%',
-    borderWidth: 0,
     borderStyle: 'none',
     outline: 'none',
     padding: '0 8px',
-    fontSize: '15px',
+    fontSize: '16px',
   },
   paddingLeft: {
     paddingLeft: 8,
@@ -55,6 +57,29 @@ const styles = stylex.create({
   },
   wrapperDefultStyles: {
     width: '200px',
+  },
+  minimizedPlaceholderWrapper: {
+    position: 'absolute',
+    top: -11,
+    left: 10,
+    zIndex: 4,
+    width: 'fit-content',
+  },
+  minimizedPlaceholderStyles: {
+    zIndex: 4,
+    paddingLeft: 1,
+    position: 'relative',
+    fontSize: '12px',
+    color: 'rgba(53,90,223,1)',
+  },
+  placeholderBackgroundStyles: {
+    zIndex: 1,
+    height: 5,
+    top: 6,
+    paddingRight: 1,
+    position: 'absolute',
+    backgroundColor: 'white',
+    width: '100%',
   },
 })
 
@@ -115,6 +140,17 @@ const Input = ({
         isFocused && styles.focusStyles
       )}
     >
+      {(isFocused || inputValue?.length > 0) && placeholder && (
+        <div {...stylex.props(styles.minimizedPlaceholderWrapper)}>
+          <>
+            <Text
+              text={placeholder}
+              textStyles={styles.minimizedPlaceholderStyles}
+            />
+            <div {...stylex.props(styles.placeholderBackgroundStyles)} />
+          </>
+        </div>
+      )}
       {leftIconProps && (
         <div
           {...stylex.props(
@@ -138,7 +174,7 @@ const Input = ({
         width="100%"
         height="100%"
         value={inputValue}
-        placeholder={placeholder}
+        placeholder={!isFocused ? placeholder : ''}
         onChange={onChange}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}

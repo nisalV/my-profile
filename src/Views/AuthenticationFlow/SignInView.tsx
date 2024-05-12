@@ -5,21 +5,10 @@ import { useLocation } from 'wouter'
 import { useCallback, useState } from 'react'
 import { signInUser } from '../../Common/Authentication'
 import Spacer from '../../CoreComponents/Spacer/Spacer'
-
-const Styles = stylex.create({
-  headerStyles: {
-    marginVertical: 0,
-  },
-  buttonStyles: {
-    backgroundColor: 'green',
-    width: 200,
-    height: 40,
-  },
-  subButtonStyles: {
-    backgroundColor: 'transparent',
-    background: 'transparent',
-  },
-})
+import { buttonStyles } from '../../Common/Styles/ButtonStyles'
+import { commonStyles } from '../../Common/Styles/Styles'
+import { inputStyles } from '../../Common/Styles/InputStyles'
+import Text from '../../CoreComponents/TextComponent/Text'
 
 type SignInViewProps = {
   userData: { email: string; password: string }
@@ -48,53 +37,67 @@ const SignInView = ({
   }, [userData])
 
   return (
-    <>
-      <h1 {...stylex.props(Styles.headerStyles)}>Sign In</h1>
-      <Spacer height={20} />
-      <Input
-        id="userEmail"
-        placeholder="Email"
-        inputWrapperStyles={null}
-        onChangeText={onChangeEmail}
-      />
-      <Spacer height={20} />
-      <Input
-        id="userPassword"
-        type="password"
-        placeholder="Password"
-        inputWrapperStyles={null}
-        onChangeText={onChangePassword}
-      />
-      <Spacer height={40} />
-      <Button
-        text="Sign In"
-        isDisabled={isLoading}
-        isLoading={isLoading}
-        buttonStyles={Styles.buttonStyles}
-        onClick={signIn}
-      />
-      <Spacer height={50} />
-      <Button
-        text="Go To Sign Up"
-        isDisabled={isLoading}
-        buttonStyles={Styles.subButtonStyles}
-        onClick={() => setLocation('/signup')}
-      />
-      <Spacer height={10} />
-      <Button
-        text="Fogot Password"
-        isDisabled={isLoading}
-        buttonStyles={Styles.subButtonStyles}
-        onClick={() => setLocation('/fogot-password')}
-      />
-      <Spacer height={10} />
-      <Button
-        text="Go To Welcome"
-        isDisabled={isLoading}
-        buttonStyles={Styles.subButtonStyles}
-        onClick={() => setLocation('/')}
-      />
-    </>
+    <div {...stylex.props(commonStyles.mainWrapperStyles)}>
+      <div {...stylex.props(commonStyles.authItemsContainerStyles)}>
+        <Text
+          text={'Hi there, lets Sign in...'}
+          textStyles={commonStyles.authHeadersTextStyles}
+        />
+        <Spacer height={20} />
+        <Input
+          id="userEmail"
+          placeholder="Email"
+          inputWrapperStyles={inputStyles.authInputWrapperStyles}
+          onChangeText={onChangeEmail}
+        />
+        <Spacer height={25} />
+        <Input
+          id="userPassword"
+          type="password"
+          placeholder="Password"
+          inputWrapperStyles={inputStyles.authInputWrapperStyles}
+          onChangeText={onChangePassword}
+        />
+        <Spacer height={40} />
+        <Button
+          text="Sign in"
+          isDisabled={isLoading}
+          isLoading={isLoading}
+          buttonStyles={buttonStyles.signInButtonStyles}
+          textStyles={buttonStyles.headerButtonTextStyles}
+          onClick={signIn}
+        />
+        <Spacer height={30} />
+        <div {...stylex.props(buttonStyles.subButtonWrapper)}>
+          <Button
+            text="Sign up"
+            hideOverlay={true}
+            isDisabled={isLoading}
+            buttonStyles={buttonStyles.authSubButtonStyles}
+            textStyles={buttonStyles.authSubButtonTextStyles}
+            onClick={() => setLocation('/signup')}
+          />
+          <Spacer width={30} />
+          <Button
+            text="Forgot password?"
+            hideOverlay={true}
+            isDisabled={isLoading}
+            buttonStyles={buttonStyles.authSubButtonStyles}
+            textStyles={buttonStyles.authSubButtonTextStyles}
+            onClick={() => setLocation('/forgot-password')}
+          />
+          <Spacer width={30} />
+          <Button
+            text="Home"
+            hideOverlay={true}
+            isDisabled={isLoading}
+            buttonStyles={buttonStyles.authSubButtonStyles}
+            textStyles={buttonStyles.authSubButtonTextStyles}
+            onClick={() => setLocation('/')}
+          />
+        </div>
+      </div>
+    </div>
   )
 }
 

@@ -12,7 +12,7 @@ const styles = stylex.create({
       default: '0px 0px 5px 0px rgba(0,0,0,0.4)',
       ':hover': '0px 0px 10px 0px rgba(0,0,0,0.4)',
     },
-    transition: 'all 0.5s ease',
+    transition: 'all 0.2s ease-in-out',
   },
   buttonConstantStyles: {
     padding: 0,
@@ -65,7 +65,10 @@ const styles = stylex.create({
     display: 'block',
     background: 'linear-gradient(#0000, rgb(0 0 0/10%)) top/100% 800%',
     backgroundPosition: { ':hover': 'bottom' },
-    transition: 'all 0.5s ease',
+    transition: 'all 0.2s ease-in-out',
+  },
+  hideOverlay: {
+    display: 'none',
   },
 })
 
@@ -73,6 +76,7 @@ interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   id?: string
   type?: 'button' | 'submit' | 'reset'
   text?: string
+  hideOverlay?: boolean
   leftElement?: JSX.Element
   centerElement?: JSX.Element
   rightElement?: JSX.Element
@@ -90,6 +94,7 @@ function Button({
   id,
   type,
   text,
+  hideOverlay,
   leftElement: LeftElement,
   centerElement: CenterElement,
   rightElement: RightElement,
@@ -117,7 +122,12 @@ function Button({
         styles.buttonConstantStyles
       )}
     >
-      <div {...stylex.props(styles.buttonOverlayStyles)}></div>
+      <div
+        {...stylex.props(
+          styles.buttonOverlayStyles,
+          hideOverlay && styles.hideOverlay
+        )}
+      />
       <div
         {...stylex.props(
           styles.innerItemCommonStyles,
@@ -146,7 +156,12 @@ function Button({
             {isLoading ? (
               <Loader size={'25px'} />
             ) : text ? (
-              <Text oneLine text={text} textStyles={textStyles} />
+              <Text
+                oneLine
+                clickable={hideOverlay}
+                text={text}
+                textStyles={textStyles}
+              />
             ) : (
               CenterElement
             )}
