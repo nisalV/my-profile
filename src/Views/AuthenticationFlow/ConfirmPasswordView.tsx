@@ -1,82 +1,74 @@
-import { useCallback, useRef, useState } from 'react'
+import { useState } from 'react'
 import stylex from '@stylexjs/stylex'
 import Input from '../../CoreComponents/InputComponent/Input'
 import Button from '../../CoreComponents/ButtonComponent/Button'
 import Spacer from '../../CoreComponents/Spacer/Spacer'
-import { confirmResetUserPassword } from '../../Common/Authentication'
-import { useLocation } from 'wouter'
-
-const Styles = stylex.create({
-  headerStyles: {
-    marginVertical: 0,
-  },
-  buttonStyles: {
-    backgroundColor: 'green',
-    width: 200,
-    height: 40,
-  },
-})
+import Text from '../../CoreComponents/TextComponent/Text'
+import { commonStyles } from '../../Common/Styles/Styles'
+import { inputStyles } from '../../Common/Styles/InputStyles'
+import { buttonStyles } from '../../Common/Styles/ButtonStyles'
+import { useConfirmPassword } from '../../Hooks/Auth'
 
 type ConfirmPasswordViewProps = {
   email: string
 }
 
 const ConfirmPasswordView = ({ email }: ConfirmPasswordViewProps) => {
-  const code = useRef('')
-  const password = useRef('')
-
-  const [, setLocation] = useLocation()
-
-  const [isLoading, setIsLoading] = useState(false)
+  const [code, setCode] = useState('')
+  const [password, setPassword] = useState('')
   const [isPressedConfirm, setIsPressedConfirm] = useState(false)
 
-  const resetPassword = useCallback(async () => {
-    await confirmResetUserPassword({
-      username: email,
-      confirmationCode: code.current,
-      newPassword: password.current,
-      onSuccess: () => {
-        console.log('Password reset successfully')
-        setLocation('/signin')
-      },
-      setLoading: () => setIsLoading(true),
-      onError: (error) => console.log('resetPassword error: ', error),
-    })
-  }, [email])
+  const { isLoading, resetPassword } = useConfirmPassword({
+    email,
+    code: code,
+    password: password,
+  })
 
   return (
-    <>
-      <h1 {...stylex.props(Styles.headerStyles)}>
-        {!isPressedConfirm ? 'Confirm Code' : 'Set your new password'}
-      </h1>
-      <Spacer height={20} />
-      {!isPressedConfirm ? (
-        <Input
-          id="resetPasswordCode"
-          placeholder="Code"
-          inputWrapperStyles={null}
-          onChangeText={(text) => (code.current = text)}
+    <div {...stylex.props(commonStyles.mainWrapperStyles)}>
+      <div {...stylex.props(commonStyles.authItemsContainerStyles)}>
+        <Text
+          text={
+            !isPressedConfirm
+              ? `We've sent your a code to your email. Enter it here`
+              : 'Ok, now set your new password!'
+          }
+          textStyles={commonStyles.authHeadersTextStyles}
         />
-      ) : (
-        <Input
-          id="password"
-          type="password"
-          placeholder="New password"
-          inputWrapperStyles={null}
-          onChangeText={(text) => (password.current = text)}
+        <Spacer height={30} />
+        {!isPressedConfirm ? (
+          <Input
+            id="resetPasswordCode"
+            placeholder="Code"
+            inputWrapperStyles={inputStyles.authInputWrapperStyles}
+            onChangeText={setCode}
+          />
+        ) : (
+          <Input
+            id="password"
+            type="password"
+            placeholder="New password"
+            inputWrapperStyles={inputStyles.authInputWrapperStyles}
+            onChangeText={setPassword}
+          />
+        )}
+        <Spacer height={40} />
+        <Button
+          text={!isPressedConfirm ? 'Next' : 'Confirm'}
+          isDisabled={
+            isLoading ||
+            (!isPressedConfirm && code?.trim()?.length === 0) ||
+            (isPressedConfirm && password?.trim()?.length === 0)
+          }
+          isLoading={isLoading}
+          buttonStyles={buttonStyles.signInButtonStyles}
+          textStyles={buttonStyles.headerButtonTextStyles}
+          onClick={() =>
+            isPressedConfirm ? resetPassword() : setIsPressedConfirm(true)
+          }
         />
-      )}
-      <Spacer height={40} />
-      <Button
-        text="Confirm"
-        isDisabled={isLoading}
-        isLoading={isLoading}
-        buttonStyles={Styles.buttonStyles}
-        onClick={() =>
-          isPressedConfirm ? resetPassword() : setIsPressedConfirm(true)
-        }
-      />
-    </>
+      </div>
+    </div>
   )
 }
 

@@ -2,13 +2,12 @@ import stylex from '@stylexjs/stylex'
 import Input from '../../CoreComponents/InputComponent/Input'
 import Button from '../../CoreComponents/ButtonComponent/Button'
 import { useLocation } from 'wouter'
-import { useCallback, useState } from 'react'
-import { signInUser } from '../../Common/Authentication'
 import Spacer from '../../CoreComponents/Spacer/Spacer'
 import { buttonStyles } from '../../Common/Styles/ButtonStyles'
 import { commonStyles } from '../../Common/Styles/Styles'
 import { inputStyles } from '../../Common/Styles/InputStyles'
 import Text from '../../CoreComponents/TextComponent/Text'
+import { useSignIn } from '../../Hooks/Auth'
 
 type SignInViewProps = {
   userData: { email: string; password: string }
@@ -21,20 +20,8 @@ const SignInView = ({
   onChangePassword,
 }: SignInViewProps) => {
   const [, setLocation] = useLocation()
-  const [isLoading, setIsLoading] = useState(false)
 
-  const signIn = useCallback(async () => {
-    userData.email?.trim()?.length > 0 && userData.password?.trim()?.length > 0
-      ? await signInUser({
-          username: userData.email,
-          password: userData.password,
-          onSuccess: () => setLocation('/home'),
-          onError: (error) => console.log('signInUser error: ', error),
-          setLoading: setIsLoading,
-          navigateToResetPassword: () => setLocation('/fogot-password'),
-        })
-      : alert('Please enter email and password')
-  }, [userData])
+  const { isLoading, signIn } = useSignIn({ userData })
 
   return (
     <div {...stylex.props(commonStyles.mainWrapperStyles)}>
@@ -43,7 +30,7 @@ const SignInView = ({
           text={'Hi there, lets Sign in...'}
           textStyles={commonStyles.authHeadersTextStyles}
         />
-        <Spacer height={20} />
+        <Spacer height={30} />
         <Input
           id="userEmail"
           placeholder="Email"

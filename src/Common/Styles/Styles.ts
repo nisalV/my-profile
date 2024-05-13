@@ -14,12 +14,14 @@ export const commonStyles = stylex.create({
     minWidth: 300,
     width: '30%',
     backgroundColor: 'white',
+    justifyContent: 'center',
     boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.4)',
   },
   authHeadersTextStyles: {
     fontSize: {
       default: 40,
-      '@media (max-width: 900px)': 33,
+      '@media (max-width: 1200px)': 35,
+      '@media (max-width: 1000px)': 30,
     },
     fontWeight: 200,
     background:
