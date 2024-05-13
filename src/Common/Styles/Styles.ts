@@ -19,9 +19,9 @@ export const commonStyles = stylex.create({
   },
   authHeadersTextStyles: {
     fontSize: {
-      default: 40,
-      '@media (max-width: 1200px)': 35,
-      '@media (max-width: 1000px)': 30,
+      default: 35,
+      '@media (max-width: 1200px)': 30,
+      '@media (max-width: 1000px)': 25,
     },
     fontWeight: 200,
     background:
