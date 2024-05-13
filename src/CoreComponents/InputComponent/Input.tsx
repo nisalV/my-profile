@@ -76,7 +76,7 @@ const styles = stylex.create({
     zIndex: 1,
     height: 5,
     top: 6,
-    paddingRight: 1,
+    paddingRight: 1.5,
     position: 'absolute',
     backgroundColor: 'white',
     width: '100%',

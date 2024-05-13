@@ -38,6 +38,17 @@ export const buttonStyles = stylex.create({
       ':hover': '-20px',
     },
   },
+  signUpButtonStyles: {
+    width: '100%',
+    height: 50,
+    background:
+      'linear-gradient(45deg, rgba(165,76,176,1) 10%, rgba(255,238,190,1) 105%)',
+    backgroundSize: '120% 50px',
+    backgroundPosition: {
+      default: '0px',
+      ':hover': '-20px',
+    },
+  },
   subButtonWrapper: {
     display: 'flex',
     justifyContent: 'center',
