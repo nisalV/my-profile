@@ -1,69 +1,68 @@
-import { useCallback, useRef, useState } from 'react'
 import stylex from '@stylexjs/stylex'
 import Input from '../../CoreComponents/InputComponent/Input'
 import Button from '../../CoreComponents/ButtonComponent/Button'
-import { resetUserPassword } from '../../Common/Authentication'
 import { useLocation } from 'wouter'
 import Spacer from '../../CoreComponents/Spacer/Spacer'
-
-const Styles = stylex.create({
-  headerStyles: {
-    marginVertical: 0,
-  },
-  buttonStyles: {
-    backgroundColor: 'green',
-    width: 200,
-    height: 40,
-  },
-})
+import { commonStyles } from '../../Common/Styles/Styles'
+import Text from '../../CoreComponents/TextComponent/Text'
+import { inputStyles } from '../../Common/Styles/InputStyles'
+import { buttonStyles } from '../../Common/Styles/ButtonStyles'
+import { useConfirmResettingPassword } from '../../Hooks/Auth'
 
 type ConfirmEmailViewProps = {
-  setEmail: (email: string | null) => void
+  email: string
+  setEmail: (email: string) => void
+  onResetRequestSent: (sent: boolean) => void
 }
 
-const ConfirmEmailView = ({ setEmail }: ConfirmEmailViewProps) => {
-  const email = useRef('')
-
+const ConfirmEmailView = ({
+  email,
+  setEmail,
+  onResetRequestSent,
+}: ConfirmEmailViewProps) => {
   const [, setLocation] = useLocation()
 
-  const [isLoading, setIsLoading] = useState(false)
-
-  const confirmRessetingPassword = useCallback(async () => {
-    await resetUserPassword({
-      username: email.current,
-      onSuccess: () => setEmail(email.current),
-      onError: (error) => {
-        setEmail(null)
-        console.log('resetPassword error: ', error)
-      },
-      setLoading: setIsLoading,
-    })
-  }, [])
+  const { isLoading, confirmRessetingPassword } = useConfirmResettingPassword({
+    email,
+    onResetRequestSent: onResetRequestSent,
+  })
 
   return (
-    <>
-      <h1 {...stylex.props(Styles.headerStyles)}>Confirm Email</h1>
-      <Spacer height={20} />
-      <Input
-        id="resetPasswordEmail"
-        placeholder="Email"
-        inputWrapperStyles={null}
-        onChangeText={(text) => (email.current = text)}
-      />
-      <Spacer height={20} />
-      <Button
-        text="Confirm"
-        isDisabled={isLoading}
-        isLoading={isLoading}
-        buttonStyles={Styles.buttonStyles}
-        onClick={confirmRessetingPassword}
-      />
-      <Button
-        text="Go To Sign In"
-        isDisabled={isLoading}
-        onClick={() => setLocation('/signin')}
-      />
-    </>
+    <div {...stylex.props(commonStyles.mainWrapperStyles)}>
+      <div {...stylex.props(commonStyles.authItemsContainerStyles)}>
+        <Text
+          text={'Forgot your password?\nNo worries :)\nLets reset it!'}
+          textStyles={commonStyles.authHeadersTextStyles}
+        />
+        <Spacer height={30} />
+        <Input
+          id="resetPasswordEmail"
+          placeholder="Email"
+          inputWrapperStyles={inputStyles.authInputWrapperStyles}
+          onChangeText={setEmail}
+        />
+        <Spacer height={40} />
+        <Button
+          text="Confirm email"
+          isDisabled={isLoading || email?.trim()?.length === 0}
+          isLoading={isLoading}
+          buttonStyles={buttonStyles.signInButtonStyles}
+          textStyles={buttonStyles.headerButtonTextStyles}
+          onClick={confirmRessetingPassword}
+        />
+        <Spacer height={30} />
+        <div {...stylex.props(buttonStyles.subButtonWrapper)}>
+          <Button
+            text="Go To Sign In"
+            hideOverlay={true}
+            isDisabled={isLoading}
+            buttonStyles={buttonStyles.authSubButtonStyles}
+            textStyles={buttonStyles.authSubButtonTextStyles}
+            onClick={() => setLocation('/signin')}
+          />
+        </div>
+      </div>
+    </div>
   )
 }
 
