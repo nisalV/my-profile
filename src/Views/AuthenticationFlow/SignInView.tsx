@@ -48,6 +48,7 @@ const SignInView = ({
         <Spacer height={40} />
         <Button
           text="Sign in"
+          hideOverlay={true}
           isDisabled={isLoading}
           isLoading={isLoading}
           buttonStyles={buttonStyles.signInButtonStyles}

@@ -53,6 +53,7 @@ const Welcome = () => {
           <Text text={process.env.NODE_ENV || ''} />
           <Button
             text="Sign In"
+            hideOverlay={true}
             buttonStyles={buttonStyles.headerSignInButtonStyles}
             textStyles={buttonStyles.headerButtonTextStyles}
             onClick={() => setLocation('/signin')}
@@ -60,6 +61,7 @@ const Welcome = () => {
           <Spacer width={20} />
           <Button
             text="Sign Up"
+            hideOverlay={true}
             buttonStyles={buttonStyles.headerSignUpButtonStyles}
             textStyles={buttonStyles.headerButtonTextStyles}
             onClick={() => setLocation('/signup')}
