@@ -60,6 +60,7 @@ const ConfirmPasswordView = ({ email }: ConfirmPasswordViewProps) => {
             (!isPressedConfirm && code?.trim()?.length === 0) ||
             (isPressedConfirm && password?.trim()?.length === 0)
           }
+          hideOverlay={true}
           isLoading={isLoading}
           buttonStyles={buttonStyles.signInButtonStyles}
           textStyles={buttonStyles.headerButtonTextStyles}

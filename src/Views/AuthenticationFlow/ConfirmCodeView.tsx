@@ -33,8 +33,9 @@ const ConfirmCodeView = ({ userData, onChange }: ConfirmCodeViewProps) => {
         />
         <Spacer height={40} />
         <Button
-          text="Confirm email"
+          text="Send code"
           isDisabled={isLoading || userData?.code?.trim()?.length === 0}
+          hideOverlay={true}
           isLoading={isLoading}
           buttonStyles={buttonStyles.signUpButtonStyles}
           textStyles={buttonStyles.headerButtonTextStyles}

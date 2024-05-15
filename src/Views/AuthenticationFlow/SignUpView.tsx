@@ -71,6 +71,7 @@ const SignUpView = ({
             userData?.lastName?.trim().length === 0 ||
             userData?.password?.trim().length === 0
           }
+          hideOverlay={true}
           isLoading={isLoading}
           buttonStyles={buttonStyles.signUpButtonStyles}
           textStyles={buttonStyles.headerButtonTextStyles}
