@@ -64,7 +64,7 @@ export const useConfirmSignUp = ({ userData }: ConfirmSignUpHookProps) => {
               username: userData.email,
               password: userData.password,
               onSuccess: () => setLocation('/home'),
-              onError: (error) => console.log('signInUser error: ', error),
+              onError: () => {},
               setLoading: setIsLoading,
             }),
           onError: (error) => console.log('signUpConfirmation error: ', error),
