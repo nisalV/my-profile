@@ -67,7 +67,7 @@ export const useConfirmSignUp = ({ userData }: ConfirmSignUpHookProps) => {
               onError: () => {},
               setLoading: setIsLoading,
             }),
-          onError: (error) => console.log('signUpConfirmation error: ', error),
+          onError: () => {},
           setLoading: setIsLoading,
         })
       : alert('Please fill the code field')
