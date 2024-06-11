@@ -153,7 +153,7 @@ export const useConfirmPassword = ({
         setLocation('/signin')
       },
       setLoading: setIsLoading,
-      onError: (error) => console.log('resetPassword error: ', error),
+      onError: (error) => {},
     })
   }, [email, code, password])
 
