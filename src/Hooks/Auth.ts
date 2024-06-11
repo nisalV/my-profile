@@ -150,7 +150,6 @@ export const useConfirmPassword = ({
       confirmationCode: code,
       newPassword: password,
       onSuccess: () => {
-        console.log('Password reset successfully')
         setLocation('/signin')
       },
       setLoading: setIsLoading,
