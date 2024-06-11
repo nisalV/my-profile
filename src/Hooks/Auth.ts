@@ -144,7 +144,6 @@ export const useConfirmPassword = ({
   const [isLoading, setIsLoading] = useState(false)
 
   const resetPassword = useCallback(async () => {
-    console.log('resetPassword', { email, code, password })
     await confirmResetUserPassword({
       username: email,
       confirmationCode: code,
